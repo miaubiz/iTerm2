@@ -275,6 +275,15 @@ enum {
         }
         return @[ @"", @"" ];
     }
+    if ([self.param isKindOfClass:[NSString class]] &&
+        [self.param hasPrefix:@"#"]) {
+        NSString *stringParam = self.param;
+        NSArray *parts = [stringParam componentsSeparatedByString:@"/"];
+        if (parts.count == 1 || parts.count == 2) {
+            return parts;
+        }
+        return @[ @"", @"" ];
+    }
 
     if ([self.param isKindOfClass:[NSNumber class]]) {
         NSNumber *numberParam = self.param;
@@ -294,10 +303,16 @@ enum {
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     NSColor *textColor = nil;
     NSColor *backgroundColor = nil;
-    if (parts.count == 2) {
+    if ([parts[0] hasPrefix:@"#"]) {
+        textColor = [NSColor parseHtmlColor:parts[0]];
+        if (parts.count == 2) {
+            backgroundColor = [NSColor parseHtmlColor:parts[1]];
+        }
+    } else if (parts.count == 2) {
         textColor = [NSColor colorWithString:parts[0]];
         backgroundColor = [NSColor colorWithString:parts[1]];
     }
+
     if (textColor) {
         dict[kHighlightForegroundColor] = textColor;
     }

@@ -30,6 +30,20 @@ CGFloat PerceivedBrightness(CGFloat r, CGFloat g, CGFloat b) {
 
 @implementation NSColor (iTerm)
 
++ (NSColor *)parseHtmlColor:(NSString *)colorString  {
+    unsigned int i;
+    NSScanner *scanner = [NSScanner scannerWithString:colorString];
+    scanner.scanLocation = 1;
+    [scanner scanHexInt:&i];
+    CGFloat r = (i >> 16) & 0xff;
+    CGFloat g = (i >> 8) & 0xff;
+    CGFloat b = (i >> 0) & 0xff;
+    return [NSColor colorWithCalibratedRed:r / 255.0
+                                     green:g / 255.0
+                                      blue:b / 255.0
+                                     alpha:1.0];
+}
+
 + (NSColor *)colorWithString:(NSString *)s {
     NSData *data = [[[NSData alloc] initWithBase64Encoding:s] autorelease];
     if (!data.length) {

@@ -29,6 +29,7 @@ extern NSString *const kEncodedColorDictionaryCalibratedColorSpace;
 
 CGFloat PerceivedBrightness(CGFloat r, CGFloat g, CGFloat b);
 
++ (NSColor *)parseHtmlColor:(NSString *)colorString;
 + (NSColor *)colorWithString:(NSString *)s;
 + (NSColor *)colorWith8BitRed:(int)red
                         green:(int)green
